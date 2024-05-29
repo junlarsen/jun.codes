@@ -35,6 +35,7 @@ export default async function IndexPage() {
               className="w-full h-auto rounded-md"
               width={808}
               height={741}
+              priority
             />
           </div>
         </div>

@@ -35,13 +35,13 @@ export const metadata: Metadata = {
       },
     ],
   },
-  manifest: '/site.webmanifest',
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: '/favicon.png',
     other: [
       {
         rel: 'apple-touch-icon',
-        sizes: '180x180',
+        sizes: '120x120',
         url: '/apple-touch-icon.png',
       },
       {
