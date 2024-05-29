@@ -1,0 +1,14 @@
+{
+  "name": "Jun&apos;s Crusty Corner",
+  "short_name": "jun.codes",
+  "icons": [
+    {
+      "src": "/android-chrome-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#fffffe",
+  "display": "standalone"
+}
