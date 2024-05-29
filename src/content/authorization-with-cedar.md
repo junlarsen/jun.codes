@@ -454,4 +454,4 @@ The full code listing for this example can be found on [GitHub][source].
 [docsrs-entity]: https://docs.rs/cedar-policy/latest/cedar_policy/struct.Entity.html
 [docsrs-request]: https://docs.rs/cedar-policy/latest/cedar_policy/struct.Request.html
 [docsrs-resexp]: https://docs.rs/cedar-policy/latest/cedar_policy/struct.RestrictedExpression.html
-[source]: https://github.com/junlarsen/website/blob/main/src/content/parc-authorization-with-cedar/src/main.rs
+[source]: https://github.com/junlarsen/website/blob/main/src/content/authorization-with-cedar/src/main.rs
