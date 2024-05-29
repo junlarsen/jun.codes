@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Fraunces, Lato } from 'next/font/google';
 import './globals.css';
+import 'katex/dist/katex.css';
 import { cn } from '@/classname';
 import { Navbar } from '@/components/navbar';
 import type { PropsWithChildren } from 'react';

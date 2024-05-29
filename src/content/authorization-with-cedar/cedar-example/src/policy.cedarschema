@@ -1,0 +1,13 @@
+entity UserPrincipal = {};
+entity Order = {
+  placedBy: UserPrincipal,
+};
+action PlaceOrder appliesTo {
+  principal: UserPrincipal,
+  context: {},
+};
+action ViewOrder appliesTo {
+  principal: UserPrincipal,
+  resource: Order,
+  context: {},
+};

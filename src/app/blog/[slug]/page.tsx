@@ -41,10 +41,10 @@ export default async function BlogPostPage({ params }: PageParams) {
 
   const classes = cn(
     'prose text-black',
-    'prose-p:font-lato prose-p:my-0',
-    'prose-headings:my-2',
+    'prose-p:font-lato prose-p:my-6 prose-p:text-gray-12',
+    'prose-headings:mt-2 prose-headings:-mb-4',
     'prose-pre:border prose-pre:border-gray-6 rounded-md shadow:xs',
-    'prose-a:text-brand-9 prose-a:underline',
+    'prose-a:text-brand-9 prose-a:underline prose-a:my-0',
   );
   const time = Number.parseInt(post.time.toString(10), 10);
 
