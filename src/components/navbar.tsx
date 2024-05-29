@@ -6,19 +6,24 @@ import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { type FC, useState } from 'react';
 
-const APPLICATION_NAVBAR_ITEMS = [
-  {
-    label: 'Blog',
-    href: '/blog',
-  },
-  {
-    label: 'Open Source',
-    href: '/oss',
-  },
-  {
-    label: 'Work',
-    href: '/work',
-  },
+type NavigationLink = {
+  label: string;
+  href: string;
+};
+
+const APPLICATION_NAVBAR_ITEMS: NavigationLink[] = [
+  // {
+  //   label: 'Blog',
+  //   href: '/blog',
+  // },
+  // {
+  //   label: 'Open Source',
+  //   href: '/oss',
+  // },
+  // {
+  //   label: 'Work',
+  //   href: '/work',
+  // },
 ];
 
 export const Navbar: FC = () => {
@@ -43,9 +48,11 @@ export const Navbar: FC = () => {
             </li>
           ))}
         </ul>
-        <RadixCollapsible.Trigger className="lg:hidden transition ease-in-out duration-200 transition-transform">
-          {open ? <Cross1Icon /> : <HamburgerMenuIcon />}
-        </RadixCollapsible.Trigger>
+        {APPLICATION_NAVBAR_ITEMS.length !== 0 && (
+          <RadixCollapsible.Trigger className="lg:hidden transition ease-in-out duration-200 transition-transform">
+            {open ? <Cross1Icon /> : <HamburgerMenuIcon />}
+          </RadixCollapsible.Trigger>
+        )}
       </nav>
 
       <RadixCollapsible.Content className="px-4 -mt-4 border-b border-gray-300">

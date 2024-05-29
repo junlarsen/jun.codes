@@ -1,4 +1,5 @@
 import * as colors from '@radix-ui/colors';
+import typography from '@tailwindcss/typography';
 import type { Config } from 'tailwindcss';
 
 function createScale(color: Record<string, string>) {
@@ -27,5 +28,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [typography({})],
 } satisfies Config;
