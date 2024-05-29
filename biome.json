@@ -1,0 +1,18 @@
+{
+  "$schema": "tooling/node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "ignore": ["**/node_modules/**", "**/build/**", "**/dist/**", "**/.next/**"]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "organizeImports": {
+    "enabled": true
+  }
+}
