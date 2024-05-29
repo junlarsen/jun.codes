@@ -19,7 +19,7 @@ export default async function BlogPostPage({ params }: PageParams) {
     'prose text-black',
     'prose-p:font-lato prose-p:my-0',
     'prose-headings:my-2',
-    'prose-pre:border prose-pre:border-brand-6',
+    'prose-pre:border prose-pre:border-gray-6 rounded-md shadow:xs',
     'prose-a:text-brand-9 prose-a:underline',
   );
   const time = Number.parseInt(post.time.toString(10), 10);
@@ -32,7 +32,7 @@ export default async function BlogPostPage({ params }: PageParams) {
         </span>
         <h1 className="mb-2 text-3xl lg:text-4xl font-bold">{post.title}</h1>
         <p className="text-lg">{post.description}</p>
-        <hr className="my-2 border-gray-3" />
+        <hr className="my-2 border-gray-6" />
         <div className="w-full flex justify-between gap-8">
           <p className="text-gray-11">
             Published on {post.date.toDateString()}

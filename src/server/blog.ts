@@ -91,7 +91,7 @@ export async function findPostBySlug(slug: string): Promise<Post | null> {
   }
 }
 
-export async function* findAllBlogs(): AsyncGenerator<Post> {
+async function* findAllBlogs(): AsyncGenerator<Post> {
   const entries = await fs.readdir(CONTENT_DIRECTORY);
   for (const entry of entries) {
     const realpath = await fs.realpath(path.join(CONTENT_DIRECTORY, entry));
@@ -100,4 +100,12 @@ export async function* findAllBlogs(): AsyncGenerator<Post> {
       yield getPost(realpath);
     }
   }
+}
+
+export async function getAllBlogs(): Promise<Post[]> {
+  const items: Post[] = [];
+  for await (const post of findAllBlogs()) {
+    items.push(post);
+  }
+  return items;
 }

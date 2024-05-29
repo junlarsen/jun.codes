@@ -1,7 +1,7 @@
 ---
 title: PARC Authorization with the Cedar Policy Framework
 description: A small walkthrough of the Cedar Policy framework for authorization in Rust.
-date: 2024-05-29
+date: 2024-05-28
 tags:
   - rust
   - cloud-native
