@@ -1,6 +1,7 @@
 import { cn } from '@/classname';
 import { Section } from '@/components/section';
 import { findPostBySlug } from '@/server/blog';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 type PageParams = {
@@ -8,6 +9,29 @@ type PageParams = {
     slug: string;
   };
 };
+
+export async function generateMetadata({
+  params,
+}: PageParams): Promise<Metadata> {
+  const post = await findPostBySlug(params.slug);
+  if (post === null) {
+    return notFound();
+  }
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url: `https://jun.codes/blog/${post.slug}`,
+      tags: post.tags,
+      type: 'article',
+      authors: ['Mats Jun Larsen'],
+      locale: 'en-US',
+      publishedTime: post.date.toISOString(),
+    },
+  };
+}
 
 export default async function BlogPostPage({ params }: PageParams) {
   const post = await findPostBySlug(params.slug);
