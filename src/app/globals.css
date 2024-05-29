@@ -5,3 +5,7 @@
 :root {
     font-family: var(--font-fraunces);
 }
+
+.katex-display {
+    overflow-x: auto;
+}
