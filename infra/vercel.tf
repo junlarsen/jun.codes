@@ -5,10 +5,10 @@ resource "vercel_project" "web" {
   git_repository = {
     production_branch = "main"
     type              = "github"
-    repo              = "junlarsen/website"
+    repo              = "junlarsen/jun.codes"
   }
 
-  build_command = "pnpm build"
+  build_command              = "pnpm build"
   serverless_function_region = "arn1"
 }
 
