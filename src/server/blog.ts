@@ -120,5 +120,5 @@ export async function getAllBlogs(withUnpublished: boolean): Promise<Post[]> {
   for await (const post of findAllBlogs(withUnpublished)) {
     items.push(post);
   }
-  return items.toSorted((a, b) => b.date - a.date);
+  return items.toSorted((a, b) => b.date.getUTCMilliseconds() - a.date.getUTCMilliseconds());
 }
