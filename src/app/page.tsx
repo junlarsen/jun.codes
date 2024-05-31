@@ -6,6 +6,8 @@ import { differenceInDays } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default async function IndexPage() {
   const formatter = new Intl.RelativeTimeFormat('en', {
     style: 'long',
