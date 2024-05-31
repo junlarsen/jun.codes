@@ -6,6 +6,7 @@ tags:
   - rust
   - aws
   - cloud-native
+published: false
 ---
 
 [AWS Lambda][aws-lambda] is a serverless compute service that lets you run code without having to deal with servers. It
