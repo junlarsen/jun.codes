@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Fraunces, Lato } from 'next/font/google';
+import { Fraunces, Poppins } from 'next/font/google';
 import './globals.css';
 import 'katex/dist/katex.css';
 import { cn } from '@/classname';
@@ -11,10 +11,10 @@ const fraunces = Fraunces({
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-fraunces',
 });
-const lato = Lato({
+const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-lato',
+  variable: '--font-poppins',
 });
 
 export const metadata: Metadata = {
@@ -67,7 +67,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body
         className={cn(
           fraunces.variable,
-          lato.variable,
+          poppins.variable,
           'bg-gray-1 font-fraunces',
         )}
       >

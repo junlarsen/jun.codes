@@ -20,7 +20,7 @@ export default {
     extend: {
       fontFamily: {
         fraunces: ['var(--font-fraunces)', 'ui-serif'],
-        lato: ['var(--font-lato)', 'ui-sans-serif'],
+        poppins: ['var(--font-poppins)', 'ui-sans-serif'],
       },
       colors: {
         brand: createScale(colors.red),

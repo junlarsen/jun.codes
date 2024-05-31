@@ -26,7 +26,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
             <h1 className="font-bold text-2xl lg:text-4xl">
               Software, Open Source & Bouldering
             </h1>
-            <p className="font-lato">
+            <p className="font-poppins">
               I'm Mats, a software engineer, open-source developer, and student
               based in Trondheim, Norway. I have a passion for building software
               people love. I'm currently pursing my Master's degree in
@@ -52,7 +52,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
         <h2 className="font-bold text-xl lg:text-2xl">
           {posts.length} post{posts.length === 1 ? '' : 's'}
         </h2>
-        <p className="font-lato">
+        <p className="font-poppins">
           I'm a firm believer in knowledge sharing, and occasionally write about
           software in my blog.
         </p>
@@ -65,7 +65,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
               className="w-full p-2 border border-gray-6 rounded-md shadow-xs"
             >
               <h3 className="text-lg font-bold">{post.title}</h3>
-              <p className="font-lato">{post.description}</p>
+              <p className="font-poppins">{post.description}</p>
               <div className="flex flex-col lg:flex-row lg:gap-2">
                 <time
                   dateTime={post.date.toISOString()}
