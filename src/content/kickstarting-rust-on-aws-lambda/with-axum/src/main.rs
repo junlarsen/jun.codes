@@ -19,6 +19,7 @@ pub struct HelloQuery {
     pub name: Option<String>,
 }
 
+/// Handler that will respond to requests at /?name={name}
 async fn handler(Query(path): Query<HelloQuery>) -> impl IntoResponse {
     let response = json!({
         "message": format!("Hello, {}!", path.name.unwrap_or("anonymous".to_owned())),

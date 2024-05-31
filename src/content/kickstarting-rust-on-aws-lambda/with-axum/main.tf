@@ -75,3 +75,7 @@ resource "aws_iam_role_policy_attachment" "public_invoke" {
   policy_arn = aws_iam_policy.public_invoke.arn
   role       = aws_iam_role.lambda_execute_role.name
 }
+
+output "url" {
+  value = aws_lambda_function_url.this.function_url
+}

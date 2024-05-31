@@ -57,7 +57,6 @@ resource "aws_lambda_function_url" "this" {
   authorization_type = "NONE"
 }
 
-
 data "aws_iam_policy_document" "execution" {
   statement {
     effect    = "Allow"
@@ -74,4 +73,8 @@ resource "aws_iam_policy" "public_invoke" {
 resource "aws_iam_role_policy_attachment" "public_invoke" {
   policy_arn = aws_iam_policy.public_invoke.arn
   role       = aws_iam_role.lambda_execute_role.name
+}
+
+output "url" {
+  value = aws_lambda_function_url.this.function_url
 }

@@ -54,6 +54,7 @@ const chain = unified()
       'zsh',
       'terraform',
       'java',
+      'diff',
     ],
   })
   .use(rehypeSlug)
