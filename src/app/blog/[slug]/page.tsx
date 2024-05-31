@@ -1,6 +1,7 @@
 import { cn } from '@/classname';
 import { Badge } from '@/components/badge';
 import { Section } from '@/components/section';
+import { formatDate } from '@/internationalization';
 import { findPostBySlug } from '@/server/blog';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -51,15 +52,19 @@ export default async function BlogPostPage({ params }: PageParams) {
 
   return (
     <Section>
-      <div>
+      <article>
         <span className="text-gray-11">{time} minute read</span>
         <h1 className="mb-2 text-3xl lg:text-4xl font-bold">{post.title}</h1>
         <p className="text-lg">{post.description}</p>
         <hr className="my-2 border-gray-6" />
         <div className="w-full flex justify-between gap-8">
-          <p className="text-gray-11">
+          <time
+            dateTime={post.date.toISOString()}
+            className="text-gray-11"
+            title={formatDate(post.date)}
+          >
             Published on {post.date.toDateString()}
-          </p>
+          </time>
           <div className="flex gap-2">
             <span className="text-gray-11">in </span>
             {post.tags.map((tag) => (
@@ -73,7 +78,7 @@ export default async function BlogPostPage({ params }: PageParams) {
           dangerouslySetInnerHTML={{ __html: post.content }}
           className={cn(classes, 'mt-4')}
         />
-      </div>
+      </article>
     </Section>
   );
 }

@@ -1,7 +1,7 @@
 import { Badge } from '@/components/badge';
 import { Grid } from '@/components/grid';
 import { Section } from '@/components/section';
-import { getRelativeTime } from '@/internationalization';
+import { formatDate, getRelativeTime } from '@/internationalization';
 import { getAllBlogs } from '@/server/blog';
 import { differenceInDays } from 'date-fns';
 import Image from 'next/image';
@@ -67,9 +67,13 @@ export default async function IndexPage({ searchParams }: PageParams) {
               <h3 className="text-lg font-bold">{post.title}</h3>
               <p className="font-lato">{post.description}</p>
               <div className="flex flex-col lg:flex-row lg:gap-2">
-                <p className="text-gray-11">
+                <time
+                  dateTime={post.date.toISOString()}
+                  className="text-gray-11"
+                  title={formatDate(post.date)}
+                >
                   Posted {getRelativeTime(post.date)}
-                </p>
+                </time>
                 <span className="text-gray-11 hidden lg:block">|</span>
                 <p className="text-gray-11">
                   {Number.parseInt(post.time.toString(10), 10)} minute read

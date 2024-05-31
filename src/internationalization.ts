@@ -10,3 +10,11 @@ export function getRelativeTime(value: Date) {
   });
   return formatter.format(-difference, 'days');
 }
+
+export function formatDate(value: Date) {
+  return new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(value);
+}
