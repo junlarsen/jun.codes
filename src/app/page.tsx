@@ -1,18 +1,23 @@
 import { Grid } from '@/components/grid';
 import { Section } from '@/components/section';
 import { getAllBlogs } from '@/server/blog';
-import { isBetaMode } from '@/server/environment';
 import { differenceInDays } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-export default async function IndexPage() {
+type PageParams = {
+  searchParams: {
+    beta?: '1';
+  };
+};
+
+export default async function IndexPage({ searchParams }: PageParams) {
   const formatter = new Intl.RelativeTimeFormat('en', {
     style: 'long',
   });
-  const posts = await getAllBlogs(isBetaMode);
+  const posts = await getAllBlogs(searchParams.beta === '1');
   return (
     <>
       <Section>
