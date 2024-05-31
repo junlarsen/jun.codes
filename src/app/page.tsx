@@ -1,3 +1,4 @@
+import { Badge } from '@/components/badge';
 import { Grid } from '@/components/grid';
 import { Section } from '@/components/section';
 import { getRelativeTime } from '@/internationalization';
@@ -76,9 +77,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
                 <span className="text-gray-11  hidden lg:block">&mdash;</span>
                 <div className="flex gap-2">
                   {post.tags.map((tag) => (
-                    <span key={tag} className="text-brand-9">
-                      {tag}
-                    </span>
+                    <Badge key={tag}>{tag}</Badge>
                   ))}
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import { cn } from '@/classname';
+import { Badge } from '@/components/badge';
 import { Section } from '@/components/section';
 import { findPostBySlug } from '@/server/blog';
 import type { Metadata } from 'next';
@@ -62,9 +63,7 @@ export default async function BlogPostPage({ params }: PageParams) {
           <div className="flex gap-2">
             <span className="text-gray-11">in </span>
             {post.tags.map((tag) => (
-              <span key={tag} className="text-brand-9">
-                {tag}
-              </span>
+              <Badge key={tag}>{tag}</Badge>
             ))}
           </div>
         </div>
