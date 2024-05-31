@@ -78,6 +78,10 @@ export default async function BlogPostPage({ params }: PageParams) {
           dangerouslySetInnerHTML={{ __html: post.content }}
           className={cn(classes, 'mt-4')}
         />
+
+        <p className="text-gray-11 text-xs">
+          Blog content licensed under CC-BY-4.0.
+        </p>
       </article>
     </Section>
   );
