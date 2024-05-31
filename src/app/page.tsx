@@ -97,9 +97,15 @@ export default async function IndexPage({ searchParams }: PageParams) {
       </Section>
 
       <Section>
-        <h2 className="font-bold text-xl lg:text-2xl">
-          {posts.length} post{posts.length === 1 ? '' : 's'}
-        </h2>
+        <header className="inline-flex gap-1">
+          <h2 className="font-bold text-xl lg:text-2xl">
+            {posts.length} post{posts.length === 1 ? '' : 's'}
+          </h2>
+          <span className="self-center text-gray-11">&ndash;</span>
+          <a href="/rss.xml" className="text-brand-9 self-center text-sm">
+            rss feed
+          </a>
+        </header>
         <p className="font-poppins max-w-[80ch]">
           I firmly believe that the best way to understand is to teach. That's
           why I love to talk about programming, software, and technology. I
