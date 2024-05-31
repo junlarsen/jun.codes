@@ -51,9 +51,7 @@ export default async function BlogPostPage({ params }: PageParams) {
   return (
     <Section>
       <div>
-        <span className="text-gray-11">
-          {time} minute{time === 1 ? '' : 's'} read
-        </span>
+        <span className="text-gray-11">{time} minute read</span>
         <h1 className="mb-2 text-3xl lg:text-4xl font-bold">{post.title}</h1>
         <p className="text-lg">{post.description}</p>
         <hr className="my-2 border-gray-6" />

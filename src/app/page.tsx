@@ -1,5 +1,6 @@
 import { Grid } from '@/components/grid';
 import { Section } from '@/components/section';
+import { getRelativeTime } from '@/internationalization';
 import { getAllBlogs } from '@/server/blog';
 import { differenceInDays } from 'date-fns';
 import Image from 'next/image';
@@ -14,9 +15,6 @@ type PageParams = {
 };
 
 export default async function IndexPage({ searchParams }: PageParams) {
-  const formatter = new Intl.RelativeTimeFormat('en', {
-    style: 'long',
-  });
   const posts = await getAllBlogs(searchParams.beta === '1');
   return (
     <>
@@ -69,16 +67,11 @@ export default async function IndexPage({ searchParams }: PageParams) {
               <p className="font-lato">{post.description}</p>
               <div className="flex flex-col lg:flex-row lg:gap-2">
                 <p className="text-gray-11">
-                  Posted{' '}
-                  {formatter.format(
-                    -differenceInDays(new Date(), post.date),
-                    'days',
-                  )}
+                  Posted {getRelativeTime(post.date)}
                 </p>
                 <span className="text-gray-11 hidden lg:block">|</span>
                 <p className="text-gray-11">
-                  {Number.parseInt(post.time.toString(10), 10)} minute
-                  {post.time < 2 ? '' : 's'} read
+                  {Number.parseInt(post.time.toString(10), 10)} minute read
                 </p>
                 <span className="text-gray-11  hidden lg:block">&mdash;</span>
                 <div className="flex gap-2">
