@@ -7,5 +7,5 @@ declare global {
 }
 
 export const isBetaMode =
-  process.env.VERCEL_URL === undefined ||
+  process.env.NODE_ENV === 'development' ||
   process.env.VERCEL_URL === 'beta.jun.codes';
