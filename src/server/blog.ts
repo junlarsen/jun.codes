@@ -24,6 +24,7 @@ export type Post = {
   time: number;
   content: string;
   tags: string[];
+  published: boolean;
 };
 
 export type PostFrontmatter = {
@@ -31,6 +32,7 @@ export type PostFrontmatter = {
   description: string;
   date: string;
   tags: string[];
+  published: boolean;
 };
 
 const chain = unified()
@@ -73,17 +75,24 @@ async function getPost(realpath: string): Promise<Post> {
     time: readingTime(html).minutes,
     content: html,
     tags: frontmatter.tags,
+    published: frontmatter.published,
   };
 }
 
-export async function findPostBySlug(slug: string): Promise<Post | null> {
+export async function findPostBySlug(
+  slug: string,
+  withUnpublished: boolean,
+): Promise<Post | null> {
   const realpath = await fs.realpath(
     path.join(CONTENT_DIRECTORY, `${slug}.md`),
   );
   try {
     const stat = await fs.stat(realpath);
     if (stat.isFile() && !stat.isSymbolicLink()) {
-      return getPost(realpath);
+      const post = await getPost(realpath);
+      if (post.published || withUnpublished) {
+        return post;
+      }
     }
     return null;
   } catch {
@@ -91,20 +100,23 @@ export async function findPostBySlug(slug: string): Promise<Post | null> {
   }
 }
 
-async function* findAllBlogs(): AsyncGenerator<Post> {
+async function* findAllBlogs(withUnpublished: boolean): AsyncGenerator<Post> {
   const entries = await fs.readdir(CONTENT_DIRECTORY);
   for (const entry of entries) {
     const realpath = await fs.realpath(path.join(CONTENT_DIRECTORY, entry));
     const stat = await fs.stat(realpath);
     if (stat.isFile() && !stat.isSymbolicLink()) {
-      yield getPost(realpath);
+      const post = await getPost(realpath);
+      if (post.published || withUnpublished) {
+        yield post;
+      }
     }
   }
 }
 
-export async function getAllBlogs(): Promise<Post[]> {
+export async function getAllBlogs(withUnpublished: boolean): Promise<Post[]> {
   const items: Post[] = [];
-  for await (const post of findAllBlogs()) {
+  for await (const post of findAllBlogs(withUnpublished)) {
     items.push(post);
   }
   return items;

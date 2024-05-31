@@ -1,6 +1,7 @@
 import { cn } from '@/classname';
 import { Section } from '@/components/section';
 import { findPostBySlug } from '@/server/blog';
+import { isBetaMode } from '@/server/environment';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -13,7 +14,7 @@ type PageParams = {
 export async function generateMetadata({
   params,
 }: PageParams): Promise<Metadata> {
-  const post = await findPostBySlug(params.slug);
+  const post = await findPostBySlug(params.slug, isBetaMode);
   if (post === null) {
     return notFound();
   }
@@ -34,7 +35,7 @@ export async function generateMetadata({
 }
 
 export default async function BlogPostPage({ params }: PageParams) {
-  const post = await findPostBySlug(params.slug);
+  const post = await findPostBySlug(params.slug, isBetaMode);
   if (post === null) {
     return notFound();
   }

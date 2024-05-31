@@ -1,6 +1,7 @@
 import { Grid } from '@/components/grid';
 import { Section } from '@/components/section';
 import { getAllBlogs } from '@/server/blog';
+import { isBetaMode } from '@/server/environment';
 import { differenceInDays } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ export default async function IndexPage() {
   const formatter = new Intl.RelativeTimeFormat('en', {
     style: 'long',
   });
-  const posts = await getAllBlogs();
+  const posts = await getAllBlogs(isBetaMode);
   return (
     <>
       <Section>
