@@ -80,7 +80,7 @@ export default async function BlogPostPage({ params }: PageParams) {
         />
 
         <p className="text-gray-11 text-xs">
-          Blog content licensed under CC-BY-4.0.
+          Blog content licensed under CC BY-NC-SA 4.0 DEED.
         </p>
       </article>
     </Section>
