@@ -110,3 +110,16 @@ export function createCollection<TMetadata>(
     },
   };
 }
+
+export const withSort = <T>(
+  collection: Collection<T>,
+  sortFn: (a: Item<T>, b: Item<T>) => number,
+): Collection<T> => {
+  return {
+    ...collection,
+    async findAll(): Promise<Item<T>[]> {
+      const items = await collection.findAll();
+      return items.sort(sortFn);
+    },
+  };
+};

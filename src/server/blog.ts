@@ -2,6 +2,7 @@ import {
   type Collection,
   type Item,
   createCollection,
+  withSort,
 } from '@/server/collection';
 import { z } from 'zod';
 
@@ -15,7 +16,10 @@ const Post = z.object({
   date: z.coerce.date(),
 });
 
-const blog: Collection<PostMetadata> = createCollection('blog', Post);
+const blog: Collection<PostMetadata> = withSort(
+  createCollection('blog', Post),
+  (a, b) => b.metadata.date.getTime() - a.metadata.date.getTime(),
+);
 
 export const findBlogBySlug = async (
   slug: string,
@@ -30,7 +34,5 @@ export const findBlogBySlug = async (
 
 export const findAllBlogs = async (withUnpublished: boolean) => {
   const items = await blog.findAll();
-  return items
-    .filter((item) => item.metadata.published || withUnpublished)
-    .toSorted((a, b) => b.metadata.date.getTime() - a.metadata.date.getTime());
+  return items.filter((item) => item.metadata.published || withUnpublished);
 };
