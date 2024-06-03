@@ -4,7 +4,8 @@ import { cn } from '@/classname';
 import * as RadixCollapsible from '@radix-ui/react-collapsible';
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-import { type FC, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { type FC, useEffect, useState } from 'react';
 
 type NavigationLink = {
   label: string;
@@ -20,19 +21,26 @@ const APPLICATION_NAVBAR_ITEMS: NavigationLink[] = [
   //   label: 'Open Source',
   //   href: '/oss',
   // },
-  // {
-  //   label: 'Work',
-  //   href: '/work',
-  // },
+  {
+    label: 'Work',
+    href: '/work',
+  },
 ];
 
 export const Navbar: FC = () => {
   const [open, setOpen] = useState(false);
+  const pathName = usePathname();
 
   const link = cn(
     'text-lg lg:text-xl font-fraunces text-black',
     'hover:text-brand-9 transition-colors duration-200',
   );
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: straight up wrong
+  useEffect(() => {
+    setOpen(false);
+  }, [pathName]);
+
   return (
     <RadixCollapsible.Root open={open} onOpenChange={setOpen}>
       <nav className="w-full mx-auto max-w-screen-lg p-4 lg:p-8 flex justify-between">

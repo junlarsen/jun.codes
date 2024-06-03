@@ -65,7 +65,12 @@ export function createCollection<TMetadata>(
   ): Promise<Item<TMetadata>> => {
     const content = await fs.readFile(realpath, 'utf-8');
     const result = await pipeline.process(content);
-    const metadata = parser.parse(result.data.frontmatter);
+    const output = parser.safeParse(result.data.frontmatter);
+    if (!output.success) {
+      console.error('Invalid metadata for input', result.data.frontmatter);
+      throw new Error('Invalid metadata');
+    }
+    const metadata = output.data;
     const slug = path.basename(realpath, path.extname(realpath));
     const html = result.toString();
     return {

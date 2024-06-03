@@ -5,8 +5,8 @@ export type Job = Item<JobMetadata>;
 export type JobMetadata = z.infer<typeof Job>;
 const Job = z.object({
   title: z.string(),
-  begin: z.date(),
-  end: z.date().or(z.literal('present')),
+  begin: z.coerce.date(),
+  end: z.coerce.date().or(z.literal('present')),
   location: z.string(),
   company: z.string(),
   type: z.enum(['full-time', 'part-time', 'contract', 'internship']),
@@ -20,4 +20,4 @@ const job = withSort(
 );
 
 export const findJobBySlug = job.findAll;
-export const findAllJobs = job.findAll();
+export const findAllJobs = job.findAll;

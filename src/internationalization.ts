@@ -18,3 +18,10 @@ export function formatDate(value: Date) {
     day: 'numeric',
   }).format(value);
 }
+
+export function formatYearAndMonth(value: Date) {
+  return new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+  }).format(value);
+}
