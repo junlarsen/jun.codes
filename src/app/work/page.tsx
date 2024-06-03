@@ -29,7 +29,8 @@ export default async function WorkPage() {
               >
                 <header className="flex gap-16 justify-between">
                   <h3 className="font-bold">
-                    {job.metadata.title} at {job.metadata.company}{' '}
+                    {job.metadata.title} <span className="font-normal">at</span>{' '}
+                    {job.metadata.company}{' '}
                     <span className="font-normal text-gray-11">
                       ({job.metadata.location})
                     </span>
