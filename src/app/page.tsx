@@ -1,6 +1,9 @@
 import { Badge } from '@/components/badge';
 import { Grid } from '@/components/grid';
+import { Heading } from '@/components/heading';
 import { Section } from '@/components/section';
+import { Text } from '@/components/text';
+import { Title } from '@/components/title';
 import { formatDate, getRelativeTime } from '@/internationalization';
 import { getAllBlogs } from '@/server/blog';
 import { differenceInDays } from 'date-fns';
@@ -23,16 +26,16 @@ export default async function IndexPage({ searchParams }: PageParams) {
         <Grid />
         <div className="flex w-full items-center gap-8">
           <div className="lg:w-2/3">
-            <h1 className="font-bold text-2xl lg:text-4xl">
+            <Title className="font-bold text-2xl lg:text-4xl">
               Software, Open Source, Travel & Bouldering
-            </h1>
-            <p className="font-poppins max-w-[80ch]">
+            </Title>
+            <Text constrained>
               I'm Mats, a software engineer, open-source developer, and student
               based in Trondheim, Norway. I have a passion for building software
               people love. I'm currently pursing my Master's degree in
               informatics and artificial intelligence at the Norwegian
               University of Science and Technology.
-            </p>
+            </Text>
             <address className="flex lg:hidden gap-2 items-center mt-2">
               <a
                 href="https://linkedin.com/in/mats-jun-larsen"
@@ -98,20 +101,20 @@ export default async function IndexPage({ searchParams }: PageParams) {
 
       <Section>
         <header className="inline-flex gap-1">
-          <h2 className="font-bold text-xl lg:text-2xl">
+          <Heading>
             {posts.length} post{posts.length === 1 ? '' : 's'}
-          </h2>
+          </Heading>
           <span className="self-center text-gray-11">&ndash;</span>
           <a href="/rss.xml" className="text-brand-9 self-center text-sm">
             rss feed
           </a>
         </header>
-        <p className="font-poppins max-w-[80ch]">
+        <Text constrained>
           I firmly believe that the best way to understand is to teach. That's
           why I love to talk about programming, software, and technology. I
           occasionally write blog posts about things I find interesting, and I
           hope you find them interesting too.
-        </p>
+        </Text>
 
         <div className="flex flex-col gap-4 mt-4">
           {posts.map((post) => (

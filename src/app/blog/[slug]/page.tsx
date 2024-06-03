@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: PageParams) {
     <Section>
       <article>
         <span className="text-gray-11">{time} minute read</span>
-        <h1 className="mb-2 text-3xl lg:text-4xl font-bold">{post.title}</h1>
+        <h1 className="mb-2 text-2xl lg:text-4xl font-bold">{post.title}</h1>
         <p className="text-lg">{post.description}</p>
         <hr className="my-2 border-gray-6" />
         <div className="w-full flex justify-between gap-8">
