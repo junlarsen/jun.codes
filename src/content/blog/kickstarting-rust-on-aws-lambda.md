@@ -405,5 +405,5 @@ As always, the full code listings for both the Tower service function, and Axum 
 [cargo-lambda]: https://www.cargo-lambda.info/
 [lambda-sec]: https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html
 [code]: https://github.com/junlarsen/website/blob/main/src/content/kickstarting-rust-on-aws-lambda/
-[code-service-fn]: https://github.com/junlarsen/website/blob/main/src/content/kickstarting-rust-on-aws-lambda/with-service-fn/
-[code-axum]: https://github.com/junlarsen/website/blob/main/src/content/kickstarting-rust-on-aws-lambda/with-axum/
+[code-service-fn]: https://github.com/junlarsen/website/blob/main/src/content/blog/kickstarting-rust-on-aws-lambda/with-service-fn/
+[code-axum]: https://github.com/junlarsen/website/blob/main/src/content/blog/kickstarting-rust-on-aws-lambda/with-axum/
