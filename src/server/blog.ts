@@ -14,7 +14,7 @@ import remarkParseFrontmatter from 'remark-parse-frontmatter';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
 
-const CONTENT_DIRECTORY = path.join(process.cwd(), 'src/content');
+const CONTENT_DIRECTORY = path.join(process.cwd(), 'src/content/blog');
 
 export type Post = {
   title: string;
