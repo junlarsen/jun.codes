@@ -1,4 +1,4 @@
-import { getAllBlogs } from '@/server/blog';
+import { findAllBlogs } from '@/server/blog';
 import RSS from 'rss';
 
 export async function GET(): Promise<Response> {
@@ -15,13 +15,13 @@ export async function GET(): Promise<Response> {
     generator: 'Next.js',
     docs: 'https://www.rssboard.org/rss-specification',
   });
-  for (const post of await getAllBlogs(false)) {
+  for (const post of await findAllBlogs(false)) {
     rss.item({
-      title: post.title,
-      description: post.description,
+      title: post.metadata.title,
+      description: post.metadata.description,
       url: `https://jun.codes/blog/${post.slug}`,
-      categories: post.tags,
-      date: post.date,
+      categories: post.metadata.tags,
+      date: post.metadata.date,
       author: 'Mats Jun Larsen',
     });
   }

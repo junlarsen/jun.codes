@@ -5,8 +5,7 @@ import { Section } from '@/components/section';
 import { Text } from '@/components/text';
 import { Title } from '@/components/title';
 import { formatDate, getRelativeTime } from '@/internationalization';
-import { getAllBlogs } from '@/server/blog';
-import { differenceInDays } from 'date-fns';
+import { findAllBlogs } from '@/server/blog';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -19,7 +18,7 @@ type PageParams = {
 };
 
 export default async function IndexPage({ searchParams }: PageParams) {
-  const posts = await getAllBlogs(searchParams.beta === '1');
+  const posts = await findAllBlogs(searchParams.beta === '1');
   return (
     <>
       <Section>
@@ -123,23 +122,24 @@ export default async function IndexPage({ searchParams }: PageParams) {
               href={`/blog/${post.slug}`}
               className="w-full p-2 border border-gray-6 rounded-md shadow-xs"
             >
-              <h3 className="text-lg font-bold">{post.title}</h3>
-              <p className="font-poppins">{post.description}</p>
+              <h3 className="text-lg font-bold">{post.metadata.title}</h3>
+              <p className="font-poppins">{post.metadata.description}</p>
               <div className="flex flex-col lg:flex-row lg:gap-2">
                 <time
-                  dateTime={post.date.toISOString()}
+                  dateTime={post.metadata.date.toISOString()}
                   className="text-gray-11"
-                  title={formatDate(post.date)}
+                  title={formatDate(post.metadata.date)}
                 >
-                  Posted {getRelativeTime(post.date)}
+                  Posted {getRelativeTime(post.metadata.date)}
                 </time>
                 <span className="text-gray-11 hidden lg:block">|</span>
                 <p className="text-gray-11">
-                  {Number.parseInt(post.time.toString(10), 10)} minute read
+                  {Number.parseInt(post.metadata.readingTime.toString(10), 10)}{' '}
+                  minute read
                 </p>
                 <span className="text-gray-11  hidden lg:block">&mdash;</span>
                 <div className="flex gap-2">
-                  {post.tags.map((tag) => (
+                  {post.metadata.tags.map((tag) => (
                     <Badge key={tag}>{tag}</Badge>
                   ))}
                 </div>

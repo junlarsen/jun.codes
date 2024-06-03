@@ -2,7 +2,7 @@ import { cn } from '@/classname';
 import { Badge } from '@/components/badge';
 import { Section } from '@/components/section';
 import { formatDate } from '@/internationalization';
-import { findPostBySlug } from '@/server/blog';
+import { findBlogBySlug } from '@/server/blog';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -15,28 +15,28 @@ type PageParams = {
 export async function generateMetadata({
   params,
 }: PageParams): Promise<Metadata> {
-  const post = await findPostBySlug(params.slug, true);
+  const post = await findBlogBySlug(params.slug, true);
   if (post === null) {
     return notFound();
   }
   return {
-    title: post.title,
-    description: post.description,
+    title: post.metadata.title,
+    description: post.metadata.description,
     openGraph: {
-      title: post.title,
-      description: post.description,
+      title: post.metadata.title,
+      description: post.metadata.description,
       url: `https://jun.codes/blog/${post.slug}`,
-      tags: post.tags,
+      tags: post.metadata.tags,
       type: 'article',
       authors: ['Mats Jun Larsen'],
       locale: 'en-US',
-      publishedTime: post.date.toISOString(),
+      publishedTime: post.metadata.date.toISOString(),
     },
   };
 }
 
 export default async function BlogPostPage({ params }: PageParams) {
-  const post = await findPostBySlug(params.slug, true);
+  const post = await findBlogBySlug(params.slug, true);
   if (post === null) {
     return notFound();
   }
@@ -48,26 +48,28 @@ export default async function BlogPostPage({ params }: PageParams) {
     'prose-pre:border prose-pre:border-gray-6 rounded-md shadow:xs',
     'prose-a:text-brand-9 prose-a:underline prose-a:my-0',
   );
-  const time = Number.parseInt(post.time.toString(10), 10);
+  const time = Number.parseInt(post.metadata.readingTime.toString(10), 10);
 
   return (
     <Section>
       <article>
         <span className="text-gray-11">{time} minute read</span>
-        <h1 className="mb-2 text-2xl lg:text-4xl font-bold">{post.title}</h1>
-        <p className="text-lg">{post.description}</p>
+        <h1 className="mb-2 text-2xl lg:text-4xl font-bold">
+          {post.metadata.title}
+        </h1>
+        <p className="text-lg">{post.metadata.description}</p>
         <hr className="my-2 border-gray-6" />
         <div className="w-full flex justify-between gap-8">
           <time
-            dateTime={post.date.toISOString()}
+            dateTime={post.metadata.date.toISOString()}
             className="text-gray-11"
-            title={formatDate(post.date)}
+            title={formatDate(post.metadata.date)}
           >
-            Published on {post.date.toDateString()}
+            Published on {post.metadata.date.toDateString()}
           </time>
           <div className="flex gap-2">
             <span className="text-gray-11">in </span>
-            {post.tags.map((tag) => (
+            {post.metadata.tags.map((tag) => (
               <Badge key={tag}>{tag}</Badge>
             ))}
           </div>
