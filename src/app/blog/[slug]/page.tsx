@@ -48,6 +48,7 @@ export default async function BlogPostPage({ params }: PageParams) {
     'prose-headings:mt-2 prose-headings:-mb-4',
     'prose-pre:border prose-pre:border-gray-6 rounded-md shadow:xs',
     'prose-a:text-brand-9 prose-a:underline prose-a:my-0',
+    'prose-blockquote:text-gray-12 prose-blockquote:border-gray-6',
   );
   const time = Number.parseInt(post.metadata.readingTime.toString(10), 10);
 

@@ -45,6 +45,7 @@ export type Item<TMetadata> = {
   slug: string;
   metadata: TMetadata & {
     readingTime: number;
+    modifiedTime: Date;
   };
 };
 
@@ -64,6 +65,7 @@ export function createCollection<TMetadata>(
     realpath: string,
   ): Promise<Item<TMetadata>> => {
     const content = await fs.readFile(realpath, 'utf-8');
+    const stat = await fs.stat(realpath);
     const result = await pipeline.process(content);
     const output = parser.safeParse(result.data.frontmatter);
     if (!output.success) {
@@ -79,6 +81,7 @@ export function createCollection<TMetadata>(
       metadata: {
         ...metadata,
         readingTime: readingTime(html).minutes,
+        modifiedTime: stat.mtime,
       },
     };
   };
