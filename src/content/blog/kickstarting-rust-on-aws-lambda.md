@@ -9,7 +9,7 @@ tags:
 published: true
 ---
 
-[AWS Lambda][aws-lambda] is a serverless compute service that lets you run code without having to deal with servers. It
+[AWS Lambda][aws-lambda] is a serverless compute service that lets you run code without having to manage servers. It
 has gained popularity for its cost-effectiveness, scalability, and has been known for its ease of use with established
 programming languages like Python, JavaScript, and Java. However, it hasn't always been straightforward to use with
 Rust, a language that has gained popularity and a huge following over the past few years. In this post, we'll explore
@@ -21,7 +21,11 @@ about whether you should use Rust or AWS Lambda. It's about how well the two eco
 Throughout the guide, we will begin with a small function that responds to an incoming AWS Lambda event, and then we
 will step it up by showing how any [Tower][tower-rs] service can be deployed using the same tools. If you intend on
 following along, you will need to have a working Rust and Cargo environment, an AWS account, and [Terraform][terraform]
-installed on your machine. I'm assuming familiarity with all three tools, but I'll try to explain things as we go along.
+installed on your machine. I'm assuming familiarity with the tools, but I'll try to explain things as we go.
+
+> AWS Lamda is certainly no silver bullet, but it's a great tool for building small services that respond to events or
+> small-scale systems. Typical problems with AWS Lambda include rate-limiting, caching, and long-running tasks. However,
+> for many use cases, it's a great tool that can save you a lot of time and money.
 
 ## Tools and the ecosystem
 
@@ -41,12 +45,13 @@ from the 100MB+ sizes of the old Amazon Linux 2 images. While other base images 
 [Distroless][distroless] are popular and significantly smaller, the Amazon Linux 2023 image is a fair choice, as it's
 tightly integrated with AWS services, and available for AWS Lambda out-of-the-box. This can reduce the overhead of
 building and cross-compiling Docker images for AWS Lambda, and it can simplify the deployment process of small tools
-and applications for a small size trade-off.
+and applications for a an acceptable size trade-off.
 
 We will be using [the Cargo Lambda extension][cargo-lambda] for building and packaging our Rust Lambda functions. Cargo
 Lambda makes it dead simple to build your Lambda functions, and it significantly simplifies cross compilation. It also
-provides to test your Lambda functions locally, and it can even be used to deploy your functions to AWS Lambda. In this
-guide we will only be using it to build our functions, as we will be deploying them using Terraform.
+provides functionality to test your Lambda functions locally, and it can even be used to deploy your functions to AWS
+Lambda. In this  guide we will only be using it to build our functions, as we will be deploying our functions using
+Terraform.
 
 ## Building your first Rust Lambda function
 
@@ -67,9 +72,9 @@ cargo add lambda_runtime --features tracing
 ```
 
 The `lambda_runtime` crate contains the main runtime, while `aws_lambda_events` contains the event types for AWS Lambda.
-We also grab Tokio because the runtime depends on it, plus Tokio is awesome. The runtime crate already bundles tracing
-and tower, so we don't need to add them explicitly. You might want to add them in the future if you directly need to
-access items from those crates, but I'll leave them out since we're just doing the bare minimum here.
+We also grab Tokio because the runtime depends on it. The runtime crate already bundles tracing and tower, so we don't
+need to add them directly. You might want to add them in the future if you directly need to access items from these
+crates, but I'll leave them out since we're just doing the bare minimum here.
 
 Next, we're going to add a simple function that responds to an incoming API Gateway message. We'll keep it dead simple
 and return `"Hello from {path}"`. I'm keeping it simple with the response, but you could do as much processing as you'd
@@ -102,7 +107,7 @@ async fn handler(
 With our handler in place, we can now create the main function that will run the Lambda function. As previously
 mentioned, the entire runtime is built on top of Tower services. The runtime provides a `lambda_runtime::service_fn`
 function that can be used to wrap our handler function into a `ServiceFn<_>`. In addition, the runtime also implements
-the `tower::Service` trait for `Service<LambdaEvent<A>>` where `A` is any Serde deserializeable type. As Tower's
+the `tower::Service` trait for `Service<LambdaEvent<A>>` where `A` is any Serde deserializable type. As Tower's
 `ServiceFn` is a service, we can feed the service function directly into the runtime with `lambda_runtime::run`.
 
 ```rust
@@ -131,22 +136,21 @@ first we will package and deploy the function.
 ## Deployment with Terraform
 
 We can now build and package our function using the Cargo Lambda extension. As previously mentioned, Cargo Lambda is
-optional, but it hides some complexity and makes packaging through Terraform very easy. To build the function, we'll
-install Cargo Lambda with Cargo, and then we'll build the function. The same concepts obviously apply if you're using
-CDK, CloudFormation templates, or any other deployment tool, or even the AWS console.
+optional, but it hides some complexity and makes packaging through Terraform easy. To build the function, we'll  install
+Cargo Lambda with Cargo, and then build the function. The same concepts obviously apply if you're using CDK, 
+CloudFormation templates, or any other deployment tool, or even the AWS console.
 
 ```sh
 # Install Cargo Lambda
 cargo install cargo-lambda --locked
 
 # Build the function. By default, Cargo Lambda will install Zig and use Zig as the linker. If you're interested in that,
-# you can omit the `--compiler cargo` option. Using Cargo as the compiler won't require you to install additional build
-# tools.
+# you can omit the `--compiler cargo` option. Using Cargo won't require you to install additional build tools.
 cargo lambda build --release --compiler cargo
 ```
 
-The build command will build your application in release mode, and store the resulting binary into
-`target/lambda/release/bootstrap`. This binary is the entrypoint for your Lambda function, and it's what you'll be
+The build command will build your application in release mode and store the resulting binary into
+`target/lambda/release/bootstrap`. This binary is the entrypoint for your Lambda function, and it's what we will be
 archiving and deploying directly to AWS Lambda. As previously mentioned, we're going to be using the Amazon Linux 2023
 runtime, but if you prefer to build Docker images, you are of course free to do so. Next, we'll configure Terraform to
 deploy the function. If you are not planning on using Terraform, you can skip this section and
@@ -175,11 +179,10 @@ provider "aws" {
 }
 ```
 
-I'm using an S3 backend for storing the Terraform state, but you can use any backend you'd like. I've also used the
-eu-north-1 (Stockholm) region, but you can use any region you'd like. Next, we'll use an `archive_file` data source to
-create a ZIP archive of our Lambda function, and we'll use the `aws_lambda_function` resource to deploy the function.
-We're also going to need an IAM role for the Lambda function, and we'll have to assume `lambda.amazonaws.com` as the
-service principal.
+I'm using an S3 backend for storing the Terraform state, but you can use any backend you like. Next, we'll use an
+`archive_file` data source to create a zip archive of our Lambda function, and we'll use the `aws_lambda_function`
+resource to deploy the function. We're also going to need an IAM role for the Lambda function, and we'll have to assume
+`lambda.amazonaws.com` as the service principal.
 
 We will attach the `AWSLambdaBasicExecutionRole` policy to the role, which is a managed policy that allows the Lambda
 function to do basic things like creating and writing to CloudWatch logs.
@@ -256,8 +259,8 @@ Gateway, or any other service that can invoke Lambda functions.
 In this example, we'll set the required authorization type for invoking the Function Url to `NONE`, which means that
 anybody can invoke the function. If you're interested in [securing your function with IAM][lambda-sec], you can do so
 by setting the authorization type to `AWS_IAM`. This will require more configuration that is out of scope for this
-demonstration. Be aware that with the `NONE` authorization type and the IAM policy we will create, anybody can invoke
-the function and incur charges on your account.
+demonstration. Be aware that with the `NONE` authorization type and using the IAM policy we will create, anybody can
+invoke the function and incur charges on your account.
 
 As hinted towards, simply setting the authorization type to `NONE` is not sufficient alone, as you will need a separate
 IAM policy on the execution role that allows the `lambda:InvokeFunctionUrl` action. We'll set up the policy along with
@@ -296,10 +299,10 @@ With the Function Url and the IAM policy in place, you can now invoke the functi
 in the Terraform output, or in the AWS Lambda console. Visiting the URL in your browser should return a "Hello from /".
 You can play around with the output by changing the path in the URL.
 
-You should also be careful with public Function Urls. While they are convenient for easily testing things, they can
-easily be abused by malicious actors. If you're planning on using the function in production, you should consider
-securing it through either IAM_AUTH, through a service like AWS API Gateway, or by proxying through another service like
-CloudFront where you can add additional security measures.
+You should also be careful with public Function Urls. While they are convenient for testing, they can easily be abused
+by malicious actors if the url is guessed or leaked. If you're planning on using the function in production, you should
+consider securing it through either IAM_AUTH, through a service like AWS API Gateway, or by proxying through another
+service like  CloudFront where you can add additional security measures.
 
 With the function deployed and working, we'll now move onto building a more complete API service using the Axum
 framework.
@@ -308,10 +311,10 @@ The code at this point in time can be found [on GitHub][code-service-fn].
 
 ## Web Services on Lambda with Axum
 
-[The Axum framework][axum-rs] is a web framework built on top of the Tokio, Tower, and Tower HTTP stacks. The project
+[The Axum framework][axum-rs] is a web framework built on top of the Tokio, Tower, and Tower HTTP ecosystem. The project
 lies under the Tokio organization, and it's built on technologies we're already using. It's also instrumented with
-Tracing, which makes it a perfect fit. This time we'll re-built the Lambda function using Axum, and we'll use the
-`lambda_http` crate to adapt the Axum service to a Tower service that can be passed to the Lambda runtime.
+Tracing, which makes it a perfect fit. This time we'll re-build the Lambda function using Axum, and we'll use the
+`lambda_http` crate to transform the Axum router to a Tower service that can be passed to the Lambda runtime.
 
 First, we'll add the necessary dependencies to our project.
 
@@ -348,12 +351,12 @@ async fn handler(Query(path): Query<HelloQuery>) -> impl IntoResponse {
 ```
 
 The handler function is similar to the old implementation, and we could achieve the same result if we used Axum's
-fallback routes. However, I decided that using a query extractor would be simpler, as the ergonomics of Axum is not what
+fallback routes. However, I decided that using a query extractor would be simpler, as the details of Axum is not what
 we're focusing on.
 
 With the handler in place, we can now create the main function. Because Axum integrates with Tower, and the Lambda
-runtime is built on Tower, it becomes very easy to adapt the Axum service to a Tower service. We'll use the following
-diff:
+runtime is built on Tower, it becomes very easy to turn the Axum router to a Tower service. We'll do the following
+changes:
 
 ```diff
 -     let service = service_fn(handler);
@@ -369,7 +372,13 @@ Axum is built on top of this stack, it's a match made in heaven.
 
 Because it's all just Tower services, we don't need to change anything in our deployment process. The Lambda runtime
 will work as it did before, and the function will be deployed in the same way. The only thing that changes is the
-framework we're using, and how we're providing the Tower service to the runtime.
+framework we're using, and how we're providing the Tower service to the runtime. We can now build and deploy the
+function as we did before.
+
+```sh
+cargo lambda build --release --compiler cargo
+terraform apply
+```
 
 ## Conclusion
 
@@ -385,7 +394,7 @@ tasks, but they work well for a lot of short workloads like serving HTTP request
 AWS services.
 
 I hope this walkthrough has been helpful, and that you've seen how easy it is to get started with Rust on AWS Lambda.
-Hopefully you feel inspired to try it out yourself.
+Hopefully you now feel inspired to try it out yourself.
 
 As always, the full code listings for both the Tower service function, and Axum service can be [found on GitHub][code].
 
