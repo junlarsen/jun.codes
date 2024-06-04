@@ -124,6 +124,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
             >
               <h3 className="text-lg font-bold">{post.metadata.title}</h3>
               <p className="font-poppins">{post.metadata.description}</p>
+              <hr className="border-0.5 border-gray-6 -mx-2 my-1" />
               <div className="flex flex-col lg:flex-row lg:gap-2">
                 <time
                   dateTime={post.metadata.date.toISOString()}
@@ -132,12 +133,12 @@ export default async function IndexPage({ searchParams }: PageParams) {
                 >
                   Posted {getRelativeTime(post.metadata.date)}
                 </time>
-                <span className="text-gray-11 hidden lg:block">|</span>
+                <span className="text-gray-6 hidden lg:block">|</span>
                 <p className="text-gray-11">
                   {Number.parseInt(post.metadata.readingTime.toString(10), 10)}{' '}
                   minute read
                 </p>
-                <span className="text-gray-11  hidden lg:block">&mdash;</span>
+                <span className="text-gray-6 hidden lg:block">|</span>
                 <div className="flex gap-2">
                   {post.metadata.tags.map((tag) => (
                     <Badge key={tag}>{tag}</Badge>

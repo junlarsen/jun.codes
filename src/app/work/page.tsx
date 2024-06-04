@@ -5,6 +5,13 @@ import { Text } from '@/components/text';
 import { Title } from '@/components/title';
 import { formatYearAndMonth } from '@/internationalization';
 import { findAllJobs } from '@/server/job';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Career',
+  description: 'A condensed version of my resume.',
+  keywords: ['mats jun larsen', 'resume', 'career'],
+};
 
 export default async function WorkPage() {
   const jobs = await findAllJobs();
@@ -55,7 +62,7 @@ export default async function WorkPage() {
 
                 <hr className="border-0.5 border-gray-6 -mx-2" />
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   {job.metadata.skills.map((skill) => (
                     <Badge key={skill}>{skill}</Badge>
                   ))}

@@ -22,6 +22,7 @@ export async function generateMetadata({
   return {
     title: post.metadata.title,
     description: post.metadata.description,
+    keywords: post.metadata.tags.concat(['mats jun larsen', 'blog']),
     openGraph: {
       title: post.metadata.title,
       description: post.metadata.description,
@@ -67,10 +68,12 @@ export default async function BlogPostPage({ params }: PageParams) {
           >
             Published on {post.metadata.date.toDateString()}
           </time>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <span className="text-gray-11">in </span>
             {post.metadata.tags.map((tag) => (
-              <Badge key={tag}>{tag}</Badge>
+              <div key={tag} className="flex-start">
+                <Badge key={tag}>{tag}</Badge>
+              </div>
             ))}
           </div>
         </div>

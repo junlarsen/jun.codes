@@ -22,6 +22,7 @@ export const metadata: Metadata = {
   title: 'Jun.codes',
   description: "Mats' blog & personal piece of the internet.",
   category: 'Software Development',
+  keywords: ['mats jun larsen', 'blog', 'software development'],
   openGraph: {
     title: 'Jun.codes',
     description: "Mats' blog & personal piece of the internet.",

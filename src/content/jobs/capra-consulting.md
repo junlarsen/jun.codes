@@ -1,5 +1,5 @@
 ---
-title: Consultant Intern
+title: IT-Consultant
 location: Oslo, Norway
 company: Capra Consulting AS
 begin: 2023-06-01
