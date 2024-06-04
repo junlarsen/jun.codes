@@ -8,40 +8,55 @@ tags:
 published: true
 ---
 
-[Cedar Policy][cedar-policy] is a policy toolkit for highly configurable authorization rules written in Rust. It
-is completely open-source, and can be used from a number of languages, including Rust, Go, Java, and TypeScript. It's
-backed by Amazon Web Services (AWS) who uses Cedar for their [Amazon Verified Permissions][awsvp] service. This blog
-post will introduce you to Cedar's authorization model, and how you can use Cedar from the Rust programming language.
+[Cedar Policy][cedar-policy] is a policy engine and language for building authorization systems. It's free, open-source,
+licensed under the Apache 2.0 license, and is designed to be highly configurable and expressive. Cedar is written in
+Rust, but can be used from other languages including Go, Java, or TypeScript. It's primarily developed by Amazon Web
+Services (AWS) for their [Amazon Verified Permissions][awsvp] service. This post will give you an introduction to
+Cedar's authorization model, and how you can use Cedar to build your authorization layer.
 
 ## Why Cedar?
 
-There are several options for authorization frameworks out there, including Casbin, Open Policy Agent (OPA), as well as
-Cloud-based solutions like AWS Verified Permissions, or AWS Cognito with authorizer Lambdas.
+Authorization is a critical part of any application, and it's important to get it right. A good authorization system
+should be easy to understand, easy to test, and easy to maintain. It should also be flexible enough to handle more
+complex cases as your application(s) grow.
 
-I recently chose Cedar for a Rust application because of its expressive language, simplicity, and the fact that it is
-written in Rust. I had also considered Casbin and OPA, but I decided that Cedar would be a great fit for my use case
-because I could download it with Cargo, and it was easy to integrate with my existing Rust codebase.
+Many authorization frameworks exist, with popular choices including Open Policy Agent (OPA), or Casbin in addition to
+Cloud-based solutions like AWS Verified Permissions, or AWS Cognito Authorizers.
 
-Cloud-based soltions like AWS Verified Permissions can be viable options, especially if you're already using AWS, but
-they can be very expensive, you might want to avoid vendor lock-in, you might want easy testing, and you might want to
-have more control over your authorization infrastructure. At the time of writing, AWS Verified Permissions costs
-$0.00015 per authorization request (6666 requests per dollar), which can add up quickly. By running engines like Cedar,
-Casbin, or OPA in your own infrastructure, you can save a lot of money, and have more control over your systems.
+I recently chose Cedar for an application service written in Rust. It felt like a good fit because of its simple yet
+expressive language, and the fact that it's written in the same language as my service; Rust. I also considered Casbin
+and OPA, but I decided that Cedar would be easier to integrate because it's downloadable from Crates.io through Cargo.
+It would be a breeze to integrate with my existing Rust codebase, and I wouldn't have to worry about running a separate
+service for authorization.
+
+Cloud-based offerings like AWS Verified Permissions are also good choices, but they can quickly become expensive. I did
+consider AWS Verified Permissions, most particularly because I'm already building on AWS, but as of time of writing, the
+costs of $0.00015 per authorization request (6666 requests per dollar) became more expensive than I was willing to pay.
+By running Cedar, which is the same policy engine that AWS Verified Permissions uses, I could save a lot of money,
+simplify my infrastructure, and have more control over my authorization system.
+
+> Is one dollar per 6666 requests really that expensive? I would say it depends on the context. I'm building a small
+> application that I expect to have a low number of users, and I don't want to pay for something I can get for free. If
+> you are a large organization, then the cost might be negligible. I was also not to keen on burning money each time I
+> ran my integration tests.
 
 ## The PARC Model
 
-Cedar uses a PARC model for authorization. PARC stands for _Principal_, _Action_, _Resource_, and _Condition_. The idea
-is that each authorization rule is a statement that either permits or denies an action based on the principal, action,
-resource, and additional conditions in the request. Using PARC, it is possible to express standard authorization models
-like Role-Based Access Control (RBAC), build complex rules akin to AWS IAM policies, or keep things stupid simple with
-simple rules like "Any user can view job listings". Users familiar with AWS IAM will find the PARC model very familiar,
-as it closely resembles the way IAM policies are written.
+Cedar calls its authorization model the PARC model. The model consists of four primary components; the **P**rincial,
+**A**ction, **R**esource, and **C**ondition. Each authorization rule is a policy that either permits or denies an
+authorization request based on the calling principal, the action being performed, the resource being acted upon, and any
+additional conditions that must be met for the policy to evaluate to pass. Using the PARC model, we can express a wide
+range of authorization models, from simple role-based access control (RBAC) to more complex rules like those found in
+AWS IAM policies. Readers familiar with AWS IAM will find this model familiar, as it closely resembles the way IAM
+policies are written.
 
-For this post, we'll consider a simple domain where we have users who can place and view orders on pizza from a local
-pizza joint. We'll consider two domain types, a _User_ and an _Order_. They are related in that a user can place an
-order, and an order is placed by a user. To begin with, we will consider a policy that should allow a user to view an
-order, given that the user is the same person who placed the order. Using predicate logic, this statement can be
-expressed as follows:
+For this post, we will consider a simple use-case to demonstrate how Cedar can be used. We have a local pizza joint
+named "Rusty's Pizza" that offers a REST API for placing and viewing orders. For simplicity, we will not consider the
+authentication system behind Rusty's Pizza. We will demonstrate how we can use Cedar to enforce authorization rules for
+viewing  and placing orders, rejecting unauthorized requests.
+
+Our first policy permits any user to view an order if they happen to be the same user that placed the order. Using
+predicate logic, can write:
 
 $$
 \mathrm{Permit}(U, A, O) \iff U = \mathrm{PlacedBy}(O) \wedge A = \mathrm{ViewOrder}
@@ -49,14 +64,14 @@ $$
 
 The statement reads that any user `U` is permitted to perform the action `A` on the order `O` if the principal
 is the same as the person who placed the order, and the action is `ViewOrder`. We will now explore how we can express
-the same constraint in Cedar's policy language.
+the same constraints using Cedar's policy language.
 
 ## The Cedar Policy language
 
-Cedar policies are written in a custom, human-readable language that the Cedar runtime parses and evaluates. The
-policies are written in a declarative style, where each policy is a statement that either permits or denies an action
-based on the PARC inputs. The policy language is designed to be simple to write and easy to understand. The following
-policy expresses our predicate logic in Cedar's policy language:
+Cedar policies are written in a custom, human-readable language that the Cedar library considers when evaluating
+authorization requests. The policies are written in a declarative manner, where each policy is a statement that either
+permits or denies an action. The policy language is designed to be simple to write and easy to understand. The following
+Cedar policy expresses the constraint we previously wrote using predicate logic.
 
 ```sh
 permit(
@@ -69,16 +84,17 @@ when {
 };
 ```
 
-We can break down the policy statements into two parts; the scope and the conditions. The scope is defined by the
-`permit` block, which specifies the principal, action, and resource that the rule applies to. The conditions are defined
-by the `when` block, which expresses any additional constraints that must be met for the rule to evaluate to true. Our
-example uses a simple ID comparison to validate ownership, but Cedar supports a
+Cedar breaks down the policy statement into two parts; the scope and the conditions. The scope is defined by the
+`permit` block, which specifies the principal, action, and resource that the policy applies to. The conditions are
+defined in the `when` block, expressing any additional constraints that must be met for the rule to evaluate to true.
+Our example uses a simple ID comparison to validate ownership, but Cedar supports a
 [wide range of operators and functions][cedar-policy-docs] that can be used in the conditions.
 
-Our policy refers to two types, `UserPrincipal` and `Order`, which are not defined in the policy itself (but where?).
-Cedar does not require you to define the types, but they should exactly match the inputs passed to the APIs. From a
-first glance, it might seem like Cedar is completely untyped, but this is not the case. Cedar enables you to strongly
-type all entity types and actions in your domain using a schema file.
+The policy refers to two data types, `UserPrincipal` and `Order`. Where do these come from? Cedar does not require you
+to declare the types in the policy itself, but you should ensure that the entities passed to the policy match the types
+declared in the policy. To the naked eye, it might appear as if Cedar is completely untyped. This is fortunately not the
+case. First, Cedar will cause a runtime program error if the entities passed to the policy do not match the types, and
+secondly, Cedar highly recommends using schema validation to prevent these errors.
 
 The schema file is a separate file that declares all the legal actions and entity types in order to prevent typos and
 mistakes in the policies. More importantly, the schema file can be used to validate the policies at build time,
@@ -96,20 +112,23 @@ action ViewOrder appliesTo {
 };
 ```
 
-The syntax of the schema file closely resembles JSON with additional syntax for defining types and actions. For our
-example domain, we've declared two entity types, `UserPrincipal` and `Order`, and one action, `ViewOrder`. Because we
+The syntax of the schema file resembles JSON with some additional syntax for defining types and actions. For our
+example domain, we have declared two entity types, `UserPrincipal` and `Order`, and one action, `ViewOrder`. Because we
 need to know who placed the order to evaluate the policy, we've added a `placedBy` attribute to the `Order` type that
 references a `UserPrincipal`. Furthermore, the `ViewOrder` action also declares which principal and resource types it
 applies to.
 
+> Do you ever need more than one principal type? Yes, you might have different types of principals, such as human users,
+> bot users, service accounts, and more. Cedar can guard policies based on the calling principal type.
+
 You might be curious to know how we can compare a `UserPrincipal` with `Order.placedBy` if we don't have any properties
-on the `UserPrincipal` type. This is because Cedar enforces that all entities have a unique entity ID, which is used to
-do identity comparison. This ID is implicit, and you don't need to declare it in the schema file.
+on the `UserPrincipal` type. This is because Cedar implicitly requires a unique entity ID, which is used to do identity
+comparison. Because the ID is implicit, it cannot be declared in the schema file.
 
 The context attribute in the action definition is used to pass additional information to the policy evaluation. This
 could be used to pass information about the request, such as the IP address of the client making the request, or the
-date. The context is a map of arbitrary values that can also be used in the policy conditions. If we wanted to require
-the request to come from a specific IP address, we could add a condition to the policy like so:
+date. The context is a map of arbitrary values that can also be used in the policy conditions. An example context
+condition requiring the request to be made from a specific IP address could look like this:
 
 ```sh
 permit(
@@ -136,24 +155,23 @@ action ViewOrder appliesTo {
 };
 ```
 
-We have now covered the basics of the Cedar policy language and its schema validation. In the next section, we'll look
-at how we can use Cedar from userland in a Rust application. We'll write a simple program that evaluates a policy
-against a request, and we'll see how we can use the Cedar runtime to do this.
+We have now covered the basics of the Cedar policy language and demonstrated the schema validation feature. In the next
+section, we will begin using Cedar as a Rust library. We will write a simple program that would act as the authorization
+layer for Rusty's Pizza.
 
-## Cedar from userland with Rust
+## Cedar as a Rust library
 
-I will now demonstrate how easy it is to use Cedar from Rust. We will continue to use the example domain where we have
-users who can place orders and view pizza orders. For this example, I'll assume you are already familiar with Rust,
-and that you have a working Rust environment with Cargo set up. We'll start by initializing a new Rust project, and
-adding the necessary dependencies.
+We will now build the authorization layer for our pizza joint using Cedar from Rust. For this example, I assume you have
+a working Cargo environment, and that you're familiar with Rust. We will start by initializing a new Rust project, and
+adding the Cedar dependency.
 
 ```sh
 cargo init --bin cedar-example && cd cedar-example
 cargo add cedar-policy
 ```
 
-Next, we'll write some Rust code to declare the different domain types for our application. We'll declare two types, a
-`User` struct, and an `Order` struct. We'll also declare an `Action` enum that represents the different actions that
+Next, we'll write Rust code to declare the different domain types for our application. We'll declare two types, a `User`
+struct, and an `Order` struct. We'll also declare an `Action` enum that represents the different actions that
 can be used in our domain.
 
 ```rust
@@ -178,11 +196,12 @@ pub enum Action {
 ```
 
 You might notice that our Rust types declare more properties than the Cedar types we defined earlier. This is because
-we don't necessarily care for the user's name, or how many pizzas were ordered when evaluating the policy. Remember that
-the Cedar types should be the bare minimum required to make authorization decisions. It's up to you to decide how much
-information you need to pass to the policy evaluation, and you should remember that the more information you pass, the
-more complex your types and policies become. Furthermore, you can always add more information to a specific action using
-the context attribute as discussed earlier.
+there does not have to be a one-to-one mapping from our domain types and the Cedar types. The name of the pizza ordered
+is likely not going to be useful in any authorization policy. Not all properties are meaningful for authorization, and
+you should only pass the bare minimum required to make authorization decisions. It is up to you to decide how much
+information you want to pass to the policy evaluation. Keeping the authorization types slim reduces complexity and
+increases maintainability. Furthermore, you can always add more information to a specific action using the context
+attribute as previously discussed.
 
 Next, we will take a closer look at the Cedar APIs that we will be using to evaluate policies. The Cedar runtime
 provides a [`cedar_policy::Request`][docsrs-request] type that represents an authorization request to be decided by the
@@ -200,9 +219,11 @@ pub fn new(
 
 The function takes an optional principal, action, and resource, as well as a context map and a reference to the schema
 that the policy may be validated against. The `EntityUid` type is a wrapper around a string that represents the
-unique ID of an entity. You might wonder how we are supposed to provide the additional properties for our entity types
-if the signature only takes the unique ID. These IDs are only used to identify the correct entity, as Cedar accepts a
-set of complete [`cedar_policy::Entity`][docsrs-entity] objects to the policy evaluation.
+unique ID of an entity. Entity IDs are namespaced by the type of entity, and the ID itself. For example, the ID of a
+`User` entity with the ID 1 would be `User::"1"`, while being distinct from the `Order::"1"` entity ID. Observant
+readers might question how we can provide additional properties for the entities, if we are only providing the IDs.
+These IDs are only used to match the correct entity, as Cedar accepts a set of complete
+[`cedar_policy::Entity`][docsrs-entity] objects to the policy evaluation.
 
 The principal, action, and resource scopes are optional, as it's not always the case that you have or need all of them.
 Perhaps, some are insignificant for the policy evaluation, or perhaps you're evaluating a policy that doesn't require
@@ -210,12 +231,15 @@ a resource, such as creating a new resource, or validating an incoming IP addres
 values that can be used in the conditions as previously discussed.
 
 The schema is optional, but highly recommended, as it can be used to validate policies at build time like we discussed
-earlier. In cases where you do not want to do policy validation, you can pass `None` to the schema argument.
+earlier. In cases where you do not want to do policy validation, you will pass `None` as the schema argument.
 
 The next step is to map our domain types to Cedar entities, as these are the types that will be used in the policy
-evaluation. The Cedar API is not generic over types, but instead requires everything to be of the concrete `Entity`
-type. As such, we will  provide `From<&User>` and `From<&Order>` implementations, and `From<Action>` for the `Entity`
+evaluation. The Cedar API is not generic over types, but requires everything to be of the concrete `Entity` type. 
+Therefore, we will  provide `From<&User>` and `From<&Order>` implementations, and `From<Action>` for the `Entity`
 type.
+
+> We take a reference of User and Order, since we don't necessarily want to move the objects when constructing the
+> authorization request. It's fine to take Action by value, as it's an enum and is cheap to clone.
 
 ```rust
 /// Convenience method to convert a type into an Entity.
@@ -271,18 +295,19 @@ impl From<Action> for Entity {
 
 In the above snippet, I've taken a few shortcuts by `.expect`ing on various functions. In a real-world scenario, you
 would likely want to propagate these errors up the call stack, or handle them in a more graceful manner. The
-`id_to_entity_id` function is a helper function that constructs a unique entity ID from an integer ID and a type.
+`id_to_entity_id` function is a helper function that constructs a unique entity ID from an integer ID and an entity
+type.
 
 The `Entity` constructor takes three arguments, the unique ID of the entity, a map of attributes, and a set of parent
 entities. The attributes map is used to store the properties of the entity that we defined in our schema. Parents are
-a more advanced feature I won't cover in this post, but they can be used to define hierarchal relationships between
-entities. For example, a `Principal` entity could, for example, be either `UserPrincipal` or `MachinePrincipal`.
+a more advanced Cedar feature I won't cover in this post, but they can be used to define hierarchal relationships
+between entities. For example, a `Principal` entity could, for example, be either `UserPrincipal` or `MachinePrincipal`.
 
-In our schema we've defined User without any attributes, and as such, we're leaving an empty HashMap for the attributes,
-while Order receives a placedBy attribute that is a reference to a User entity. As Cedar has its own defined data types,
-it uses a [`RestrictedExpression`][docsrs-resexp] type to represent any legal values that can be stored inside either an
-attribute map or context. In this case, we're using the `new_entity_uid` constructor to store a reference to another
-entity.
+In our schema we've defined the User type without any attributes, and as such, we're leaving an empty HashMap for the
+attributes, while Order receives a placedBy attribute that is a reference to a User entity. As Cedar has its own defined
+data types, we build [`RestrictedExpression`][docsrs-resexp] objects. `RestrictedExpression` is used by Cedar to limit
+the values that can be used in the attributes map. In this case, we're using the `new_entity_uid` constructor to store a
+reference to another entity.
 
 We update our Cedar policies and schema to include the new PlaceOrder action. As placing an order does not affect any
 existing resource, we simply omit any details on the `resource` scope in the policy definition.
@@ -322,8 +347,9 @@ action ViewOrder appliesTo {
 };
 ```
 
-We can now include the policies in our Rust program. Ideally you would load the policies and schema from a file, but for
-the sake of simplicity, we will include them as string literals into the compiled binary.
+We can now include the policies in our Rust program. In this example, we will take a shortcut and encode the policies
+and schema into the binary program, but for a real-world task you should read them at runtime to avoid recompilation
+and deployment when a policy needs to be changed.
 
 ```rust
 const POLICIES: &'static str = include_str!("./policy.cedar");
@@ -411,7 +437,7 @@ fn main() {
 }
 ```
 
-Running our program with cargo should exit successfully, as all the assertions pass. We've now successfully implemented
+Running our program with cargo should exit successfully, as all the assertions pass. We have now successfully built
 a simple authorization system using the Cedar Policy framework in Rust.
 
 ```sh
@@ -427,9 +453,9 @@ at build time. This can be done by using the `cedar-policy-cli` tool, which can 
 cargo install cedar-policy-cli
 ```
 
-The command line tool can be used to validate the policies, format policy files, authorize policies, and more. It's most
-definitely a must-have tool for anybody working with Cedar policies. Below is an example of how I validated the policy
-from our example scenario.
+The command line tool can be used to validate policies, format policy files, test authorization, and more. It makes the
+life of a Cedar developer much easier, as it can catch problems early and provide a better developer experience. We can
+use the tool to validate our policies and schema like this:
 
 ```sh
 $ cedar validate -p src/policy.cedar -s src/policy.cedarschema --schema-format human
@@ -440,7 +466,7 @@ $ cedar validate -p src/policy.cedar -s src/policy.cedarschema --schema-format h
 ## Conclusion
 
 Cedar is a powerful policy framework that can be used to implement complex authorization rules with great developer
-tooling. It might not be as well adopted as Casbin or OPA, but it's a great choice for Rust developers who want to
+tooling. It might not be as well adopted as Casbin or OPA, but it's an excellent choice for Rust developers who want to
 enforce authorization rules in their applications.
 
 I'm personally very happy with Cedar for my use case, and I'm looking forward to seeing how the project evolves in the
@@ -455,4 +481,4 @@ The full code listing for this example can be found on [GitHub][source].
 [docsrs-entity]: https://docs.rs/cedar-policy/latest/cedar_policy/struct.Entity.html
 [docsrs-request]: https://docs.rs/cedar-policy/latest/cedar_policy/struct.Request.html
 [docsrs-resexp]: https://docs.rs/cedar-policy/latest/cedar_policy/struct.RestrictedExpression.html
-[source]: https://github.com/junlarsen/website/blob/main/src/content/blog/authorization-with-cedar/src/main.rs
+[source]: https://github.com/junlarsen/jun.codes/blob/main/src/content/blog/authorization-with-cedar/cedar-example/src/main.rs
