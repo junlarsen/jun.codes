@@ -39,7 +39,7 @@ export default async function WorkPage() {
                     {job.metadata.title} <span className="font-normal">at</span>{' '}
                     {job.metadata.company}{' '}
                     <span className="font-normal text-gray-11">
-                      ({job.metadata.location})
+                      ({job.metadata.type}, {job.metadata.location})
                     </span>
                   </h3>
                   <div>

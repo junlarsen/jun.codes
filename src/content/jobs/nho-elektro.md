@@ -1,7 +1,7 @@
 ---
 title: Front-end Developer
 location: Oslo, Norway (remote)
-company: NHO Elektro (previously Nelfo)
+company: NHO Elektro
 begin: 2019-07-01
 end: 2021-07-01
 type: part-time
