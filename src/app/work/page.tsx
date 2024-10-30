@@ -39,7 +39,10 @@ export default async function WorkPage() {
                     {job.metadata.title} <span className="font-normal">at</span>{' '}
                     {job.metadata.company}{' '}
                     <span className="font-normal text-gray-11">
-                      ({job.metadata.type !== 'full-time' && `${job.metadata.type}, `}{job.metadata.location})
+                      (
+                      {job.metadata.type !== 'full-time' &&
+                        `${job.metadata.type}, `}
+                      {job.metadata.location})
                     </span>
                   </h3>
                   <div>
@@ -56,7 +59,9 @@ export default async function WorkPage() {
 
                 <ul className="list-disc font-poppins">
                   {job.metadata.highlights.map((highlight) => (
-                    <li key={highlight} className="ml-6">{highlight}</li>
+                    <li key={highlight} className="ml-6">
+                      {highlight}
+                    </li>
                   ))}
                 </ul>
 
