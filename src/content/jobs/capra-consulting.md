@@ -1,18 +1,16 @@
 ---
-title: IT-Consultant
+title: Software Consultant
 location: Oslo, Norway
 company: Capra Consulting AS
 begin: 2023-06-01
 end: 2023-08-01
 type: internship
 highlights:
-  - Full-stack software engineer, working on various projects for XperiTech through Capra Consulting.
-  - Developed and designed new features for the Campio platform.
-  - Worked with a team of internal and external developers to deliver satisfactory results using domain-driven design.
+  - Software consultant alongside other interns at XperiTech/Campio expanding on the services provided by Campio.
+  - Built and designed a customer retention program with a loyalty point system and point shop for the Campio platform.
+  - Contributed to maintenance and improvement of Campio's existing codebases.
 skills:
-  - TypeScript
-  - React
+  - Next.js
   - Angular
   - MongoDB
-  - Agile
 ---

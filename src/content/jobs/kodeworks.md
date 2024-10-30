@@ -1,18 +1,21 @@
 ---
-title: IT-Consultant
+title: Software Consultant
 location: Trondheim, Norway
-company: Kodeworks Trondheim AS
+company: KodeWorks AS
 begin: 2023-09-01
-end: present
+end: 2024-08-01
 type: part-time
 highlights:
-  - Full-stack software engineer, building full-stack applications through KodeWorks AS.
-  - Built OpenID Connect and OAuth2.0 authentication and authorization systems.
-  - DevOps developer, managing and maintaining infrastructure on Amazon Web Services.
+  - Designed, developed, and deployed prototype of a staff management system for a KodeWorks client. Built in Java with
+    Spring Boot and a web application with Remix, deployed on AWS using Terraform.
+  - Built interactive quote planner for Sunlit Sea, a Norwegian company specializing in floating solar energy. Built in
+    Next.js and deployed on AWS.
 skills:
   - AWS
-  - Docker
-  - Spring
-  - React
+  - Terraform
+  - Remix
+  - Next.js
   - PostgreSQL
+  - Spring Boot
+  - Java
 ---
