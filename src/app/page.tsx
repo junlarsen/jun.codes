@@ -26,11 +26,11 @@ export default async function IndexPage({ searchParams }: PageParams) {
         <div className="flex w-full items-center gap-8">
           <div className="lg:w-2/3">
             <Title className="font-bold text-2xl lg:text-4xl">
-              Software, Open Source, Travel & Bouldering
+              Software, Open Source & Travelling
             </Title>
-            <Text constrained>
-              I'm Mats, a software engineer, open-source developer, and student
-              based in Trondheim, Norway. I have a passion for building software
+            <Text constrained className="mt-4">
+              Hi, my name is Mats, and I am a software engineer, open-source developer, and student
+              currently exchanging in Tokyo. I have a passion for building software
               people love. I'm currently pursing my Master's degree in
               informatics and artificial intelligence at the Norwegian
               University of Science and Technology.
@@ -73,7 +73,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
             <address className="gap-2 items-center mt-2 hidden lg:flex">
               <a
                 href="https://linkedin.com/in/mats-jun-larsen"
-                className="border border-gray-6 rounded-md p-1 bg-white"
+                className="border border-gray-6 rounded-md p-1 bg-white hover:bg-gray-3 transition-colors duration-100 ease-in-out"
               >
                 <Image
                   src="/svg/linkedin.svg"
@@ -84,7 +84,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
               </a>
               <a
                 href="https://github.com/junlarsen"
-                className="border border-gray-6 rounded-md p-1 bg-white"
+                className="border border-gray-6 rounded-md p-1 bg-white hover:bg-gray-3 transition-colors duration-100 ease-in-out"
               >
                 <Image
                   src="/svg/github.svg"
@@ -120,7 +120,7 @@ export default async function IndexPage({ searchParams }: PageParams) {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="w-full p-2 border border-gray-6 rounded-md shadow-xs"
+              className="w-full p-2 border border-gray-6 rounded-md shadow-xs hover:bg-gray-3 transition-colors duration-100 ease-in-out"
             >
               <h3 className="text-lg font-bold">{post.metadata.title}</h3>
               <p className="font-poppins">{post.metadata.description}</p>

@@ -35,7 +35,7 @@ export default async function WorkPage() {
                 className="border border-gray-6 rounded-md shadow-xs p-2 flex flex-col gap-2"
               >
                 <header className="flex gap-16 justify-between">
-                  <h3 className="font-bold">
+                  <h3 className="font-bold text-lg">
                     {job.metadata.title} <span className="font-normal">at</span>{' '}
                     {job.metadata.company}{' '}
                     <span className="font-normal text-gray-11">
@@ -59,7 +59,7 @@ export default async function WorkPage() {
 
                 <ul className="list-disc font-poppins">
                   {job.metadata.highlights.map((highlight) => (
-                    <li key={highlight} className="ml-6">
+                    <li key={highlight} className="ml-6 max-w-[80ch]">
                       {highlight}
                     </li>
                   ))}

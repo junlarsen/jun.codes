@@ -33,7 +33,7 @@ export const Navbar: FC = () => {
 
   const link = cn(
     'text-lg lg:text-xl font-fraunces text-black',
-    'hover:text-brand-9 transition-colors duration-200',
+    'hover:text-brand-9 transition-colors duration-100 ease-in-out',
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: straight up wrong
@@ -57,7 +57,7 @@ export const Navbar: FC = () => {
           ))}
         </ul>
         {APPLICATION_NAVBAR_ITEMS.length !== 0 && (
-          <RadixCollapsible.Trigger className="lg:hidden transition ease-in-out duration-200 transition-transform">
+          <RadixCollapsible.Trigger className="lg:hidden transition ease-in-out duration-100">
             {open ? <Cross1Icon /> : <HamburgerMenuIcon />}
           </RadixCollapsible.Trigger>
         )}
