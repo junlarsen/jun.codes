@@ -7,14 +7,13 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 type PageParams = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export async function generateMetadata({
-  params,
-}: PageParams): Promise<Metadata> {
+export async function generateMetadata(props: PageParams): Promise<Metadata> {
+  const params = await props.params;
   const post = await findBlogBySlug(params.slug, true);
   if (post === null) {
     return notFound();
@@ -36,7 +35,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({ params }: PageParams) {
+export default async function BlogPostPage(props: PageParams) {
+  const params = await props.params;
   const post = await findBlogBySlug(params.slug, true);
   if (post === null) {
     return notFound();

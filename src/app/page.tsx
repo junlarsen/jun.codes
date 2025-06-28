@@ -12,12 +12,13 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 type PageParams = {
-  searchParams: {
+  searchParams: Promise<{
     beta?: '1';
-  };
+  }>;
 };
 
-export default async function IndexPage({ searchParams }: PageParams) {
+export default async function IndexPage(props: PageParams) {
+  const searchParams = await props.searchParams;
   const posts = await findAllBlogs(searchParams.beta === '1');
   return (
     <>
@@ -29,11 +30,11 @@ export default async function IndexPage({ searchParams }: PageParams) {
               Software, Open Source & Travelling
             </Title>
             <Text constrained className="mt-4">
-              Hi, my name is Mats, and I am a software engineer, open-source developer, and student
-              currently exchanging in Tokyo. I have a passion for building software
-              people love. I'm currently pursing my Master's degree in
-              informatics and artificial intelligence at the Norwegian
-              University of Science and Technology.
+              Hi, my name is Mats, and I am a software engineer, open-source
+              developer, and student currently exchanging in Tokyo. I have a
+              passion for building software people love. I'm currently pursing
+              my Master's degree in informatics and artificial intelligence at
+              the Norwegian University of Science and Technology.
             </Text>
             <address className="flex lg:hidden gap-2 items-center mt-2">
               <a
