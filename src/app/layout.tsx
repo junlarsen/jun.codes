@@ -1,21 +1,11 @@
 import type { Metadata } from 'next';
-import { Fraunces, Poppins } from 'next/font/google';
+import '@fontsource/space-grotesk/400.css';
+import '@fontsource/space-grotesk/700.css';
 import './globals.css';
 import 'katex/dist/katex.css';
 import { cn } from '@/classname';
 import { Navbar } from '@/components/navbar';
 import type { PropsWithChildren } from 'react';
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-fraunces',
-});
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-poppins',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://jun.codes/'),
@@ -65,13 +55,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" dir="ltr">
-      <body
-        className={cn(
-          fraunces.variable,
-          poppins.variable,
-          'bg-gray-1 font-fraunces',
-        )}
-      >
+      <body className={cn('bg-gray-2')}>
         <Navbar />
         <main>{children}</main>
       </body>

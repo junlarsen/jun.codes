@@ -1,5 +1,4 @@
 import { Badge } from '@/components/badge';
-import { Grid } from '@/components/grid';
 import { Heading } from '@/components/heading';
 import { Section } from '@/components/section';
 import { Text } from '@/components/text';
@@ -23,18 +22,17 @@ export default async function IndexPage(props: PageParams) {
   return (
     <>
       <Section>
-        <Grid />
         <div className="flex w-full items-center gap-8">
           <div className="lg:w-2/3">
             <Title className="font-bold text-2xl lg:text-4xl">
-              Software, Open Source & Travelling
+              Software engineer, Cloud architect & open-source contributor
             </Title>
             <Text constrained className="mt-4">
-              Hi, my name is Mats, and I am a software engineer, open-source
-              developer, and student currently exchanging in Tokyo. I have a
-              passion for building software people love. I'm currently pursing
-              my Master's degree in informatics and artificial intelligence at
-              the Norwegian University of Science and Technology.
+              Hello! 👋 I'm Mats Jun Larsen, a software engineer, cloud
+              enthusiast, and student at NTNU & UTokyo. I am deeply passionate
+              about cloud computing, compiler technology, and large-scale
+              software. I'm currently pursing my Master's degree in Informatics
+              and AI.
             </Text>
             <address className="flex lg:hidden gap-2 items-center mt-2">
               <a
@@ -110,10 +108,9 @@ export default async function IndexPage(props: PageParams) {
           </a>
         </header>
         <Text constrained>
-          I firmly believe that the best way to understand is to teach. That's
-          why I love to talk about programming, software, and technology. I
-          occasionally write blog posts about things I find interesting, and I
-          hope you find them interesting too.
+          I'm a hands-on software engineer and I firmly believe in learning
+          through sharing. My blog has posts about cloud-native technologies,
+          software engineering, and open-source.
         </Text>
 
         <div className="flex flex-col gap-4 mt-4">
@@ -121,7 +118,7 @@ export default async function IndexPage(props: PageParams) {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="w-full p-2 border border-gray-6 rounded-md shadow-xs hover:bg-gray-3 transition-colors duration-100 ease-in-out"
+              className="w-full p-2 border border-gray-6 rounded-md shadow-2xs hover:bg-gray-3 transition-colors duration-100 ease-in-out"
             >
               <h3 className="text-lg font-bold">{post.metadata.title}</h3>
               <p className="font-poppins">{post.metadata.description}</p>

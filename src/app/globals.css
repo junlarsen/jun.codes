@@ -1,11 +1,70 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-    font-family: var(--font-fraunces);
+  font-family: "Space Grotesk", sans-serif;
+}
+
+@theme {
+  --color-gray-1: #fcfcfd;
+  --color-gray-2: #f9f9fb;
+  --color-gray-3: #f0f0f4;
+  --color-gray-4: #e7e8ed;
+  --color-gray-5: #e0e1e7;
+  --color-gray-6: #d8d9e1;
+  --color-gray-7: #cdced7;
+  --color-gray-8: #b9bbc7;
+  --color-gray-9: #8c8d99;
+  --color-gray-10: #81828d;
+  --color-gray-11: #62636d;
+  --color-gray-12: #1e1f25;
+
+  --color-brand-1: #f8fdff;
+  --color-brand-2: #f2fbff;
+  --color-brand-3: #e5f3fd;
+  --color-brand-4: #d9ebf9;
+  --color-brand-5: #cee5f6;
+  --color-brand-6: #c3def2;
+  --color-brand-7: #b2d4ed;
+  --color-brand-8: #97c2e1;
+  --color-brand-9: #001524;
+  --color-brand-10: #162e3f;
+  --color-brand-11: #436983;
+  --color-brand-12: #092232;
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  @media (color-gamut: p3) {
+    @theme {
+      --color-gray-1: oklch(99.1% 0.0016 281);
+      --color-gray-2: oklch(98.2% 0.0032 281);
+      --color-gray-3: oklch(95.6% 0.0048 281);
+      --color-gray-4: oklch(93.1% 0.0065 281);
+      --color-gray-5: oklch(91% 0.0082 281);
+      --color-gray-6: oklch(88.8% 0.0099 281);
+      --color-gray-7: oklch(85.3% 0.0125 281);
+      --color-gray-8: oklch(79.4% 0.0171 281);
+      --color-gray-9: oklch(64.6% 0.0175 281);
+      --color-gray-10: oklch(61% 0.0171 281);
+      --color-gray-11: oklch(50.3% 0.0149 281);
+      --color-gray-12: oklch(24.1% 0.0106 281);
+
+      --color-brand-1: oklch(99.1% 0.0065 240.1);
+      --color-brand-2: oklch(98.2% 0.013 240.1);
+      --color-brand-3: oklch(95.6% 0.0196 240.1);
+      --color-brand-4: oklch(93.1% 0.0263 240.1);
+      --color-brand-5: oklch(91% 0.0331 240.1);
+      --color-brand-6: oklch(88.8% 0.04 240.1);
+      --color-brand-7: oklch(85.3% 0.0506 240.1);
+      --color-brand-8: oklch(79.4% 0.0642 240.1);
+      --color-brand-9: oklch(18.7% 0.0428 240.1);
+      --color-brand-10: oklch(29.1% 0.0428 240.1);
+      --color-brand-11: oklch(50.3% 0.0602 240.1);
+      --color-brand-12: oklch(24.1% 0.0428 240.1);
+    }
+  }
 }
 
 .katex-display {
-    overflow-x: auto;
+  overflow-x: auto;
 }

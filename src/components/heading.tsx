@@ -12,5 +12,9 @@ export const Heading: FC<HeadingProps> = ({
   ...props
 }) => {
   const classes = cn('font-bold text-xl lg:text-2xl', className);
-  return <h2 className={classes}>{children}</h2>;
+  return (
+    <h2 className={classes} {...props}>
+      {children}
+    </h2>
+  );
 };

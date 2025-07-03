@@ -1,14 +1,7 @@
 {
-  "$schema": "tooling/node_modules/@biomejs/biome/configuration_schema.json",
+  "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "ignore": [
-      "**/node_modules/**",
-      "**/build/**",
-      "**/target/**",
-      "**/dist/**",
-      "**/.next/**",
-      "**/.cargo/**"
-    ]
+    "ignore": ["**/node_modules/**", "**/.next/**"]
   },
   "formatter": {
     "indentStyle": "space",
@@ -19,7 +12,18 @@
       "quoteStyle": "single"
     }
   },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "indentWidth": 2
+    }
+  },
   "organizeImports": {
     "enabled": true
+  },
+  "linter": {
+    "rules": {
+      "correctness": { "noUnusedImports": "error" }
+    }
   }
 }
