@@ -1,5 +1,5 @@
 ---
-title: Kickstarting Rust on AWS Lambda
+title: "Tutorial: Kickstarting Rust on AWS Lambda"
 description: A guide to building Rust services from scratch and deploying them on AWS Lambda.
 date: 2024-05-31
 tags:
