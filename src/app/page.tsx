@@ -25,7 +25,7 @@ export default async function IndexPage(props: PageParams) {
         <div className="flex w-full items-center gap-8">
           <div className="lg:w-2/3">
             <Title className="font-bold text-2xl lg:text-4xl">
-              Software engineer, Cloud architect & open-source contributor
+              Software engineer & cloud enthusiast
             </Title>
             <Text constrained className="mt-4">
               Hello! 👋 I'm Mats Jun Larsen, a software engineer, cloud
