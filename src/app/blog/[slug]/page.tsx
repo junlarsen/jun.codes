@@ -55,7 +55,7 @@ export default async function BlogPostPage(props: PageParams) {
   return (
     <Section>
       <article>
-        <span className="text-gray-11">{time} minute read</span>
+        <span className="text-gray-11">{Math.max(time, 1)} minute read</span>
         <h1 className="mb-2 text-2xl lg:text-4xl font-bold">
           {post.metadata.title}
         </h1>

@@ -113,37 +113,42 @@ export default async function IndexPage(props: PageParams) {
         </Text>
 
         <div className="flex flex-col gap-4 mt-4">
-          {posts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="w-full p-2 border border-gray-6 rounded-md shadow-2xs hover:bg-gray-3 transition-colors duration-100 ease-in-out"
-            >
-              <h3 className="text-lg font-bold">{post.metadata.title}</h3>
-              <p className="font-poppins">{post.metadata.description}</p>
-              <hr className="border-0.5 border-gray-6 -mx-2 my-1" />
-              <div className="flex flex-col lg:flex-row lg:gap-2">
-                <time
-                  dateTime={post.metadata.date.toISOString()}
-                  className="text-gray-11"
-                  title={formatDate(post.metadata.date)}
-                >
-                  Posted {getRelativeTime(post.metadata.date)}
-                </time>
-                <span className="text-gray-6 hidden lg:block">|</span>
-                <p className="text-gray-11">
-                  {Number.parseInt(post.metadata.readingTime.toString(10), 10)}{' '}
-                  minute read
-                </p>
-                <span className="text-gray-6 hidden lg:block">|</span>
-                <div className="flex gap-2">
-                  {post.metadata.tags.map((tag) => (
-                    <Badge key={tag}>{tag}</Badge>
-                  ))}
+          {posts.map((post) => {
+            const time = Number.parseInt(
+              post.metadata.readingTime.toString(10),
+              10,
+            );
+            return (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="w-full p-2 border border-gray-6 rounded-md shadow-2xs hover:bg-gray-3 transition-colors duration-100 ease-in-out"
+              >
+                <h3 className="text-lg font-bold">{post.metadata.title}</h3>
+                <p className="font-poppins">{post.metadata.description}</p>
+                <hr className="border-0.5 border-gray-6 -mx-2 my-1" />
+                <div className="flex flex-col lg:flex-row lg:gap-2">
+                  <time
+                    dateTime={post.metadata.date.toISOString()}
+                    className="text-gray-11"
+                    title={formatDate(post.metadata.date)}
+                  >
+                    Posted {getRelativeTime(post.metadata.date)}
+                  </time>
+                  <span className="text-gray-6 hidden lg:block">|</span>
+                  <p className="text-gray-11">
+                    {Math.max(time, 0)} minute read
+                  </p>
+                  <span className="text-gray-6 hidden lg:block">|</span>
+                  <div className="flex gap-2">
+                    {post.metadata.tags.map((tag) => (
+                      <Badge key={tag}>{tag}</Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </Section>
     </>
