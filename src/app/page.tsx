@@ -28,11 +28,10 @@ export default async function IndexPage(props: PageParams) {
               Software engineer & cloud enthusiast
             </Title>
             <Text constrained className="mt-4">
-              Hello! 👋 I'm Mats Jun Larsen, a software engineer, cloud
-              enthusiast, and student at NTNU & UTokyo. I am deeply passionate
-              about cloud computing, compiler technology, and large-scale
-              software. I'm currently pursing my Master's degree in Informatics
-              and AI.
+              Hello! 👋 I'm Mats, a software engineer and student with an
+              interest in cloud computing, compiler technologies, and
+              distributed systems. I'm currently finishing my masters degree in
+              informatics and artificial intelligence.
             </Text>
             <address className="flex lg:hidden gap-2 items-center mt-2">
               <a
@@ -108,9 +107,9 @@ export default async function IndexPage(props: PageParams) {
           </a>
         </header>
         <Text constrained>
-          I'm a hands-on software engineer and I firmly believe in learning
-          through sharing. My blog has posts about cloud-native technologies,
-          software engineering, and open-source.
+          I'm very hands-on, and I like to share things I find interesting. My
+          blog has posts about cloud-native technologies, software engineering,
+          and open-source.
         </Text>
 
         <div className="flex flex-col gap-4 mt-4">
