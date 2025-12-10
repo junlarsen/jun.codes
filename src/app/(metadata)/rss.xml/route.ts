@@ -1,5 +1,5 @@
-import { findAllBlogs } from '@/server/blog';
 import RSS from 'rss';
+import { findAllBlogs } from '@/server/blog';
 
 export async function GET(): Promise<Response> {
   const rss = new RSS({

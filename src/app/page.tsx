@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { Badge } from '@/components/badge';
 import { Heading } from '@/components/heading';
 import { Section } from '@/components/section';
@@ -5,8 +7,6 @@ import { Text } from '@/components/text';
 import { Title } from '@/components/title';
 import { formatDate, getRelativeTime } from '@/internationalization';
 import { findAllBlogs } from '@/server/blog';
-import Image from 'next/image';
-import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 

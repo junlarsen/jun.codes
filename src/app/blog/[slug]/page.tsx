@@ -1,10 +1,10 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { cn } from '@/classname';
 import { Badge } from '@/components/badge';
 import { Section } from '@/components/section';
 import { formatDate } from '@/internationalization';
 import { findBlogBySlug } from '@/server/blog';
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 
 type PageParams = {
   params: Promise<{

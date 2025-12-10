@@ -1,8 +1,8 @@
 'use client';
 
-import { cn } from '@/classname';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { cn } from '@/classname';
 
 export const Navbar: FC = () => {
   const link = cn(

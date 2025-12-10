@@ -1,5 +1,5 @@
-import { cn } from '@/classname';
 import type { ComponentPropsWithoutRef, FC, PropsWithChildren } from 'react';
+import { cn } from '@/classname';
 
 export type TitleProps = {
   className?: string;

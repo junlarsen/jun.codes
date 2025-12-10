@@ -1,10 +1,10 @@
+import { z } from 'zod';
 import {
   type Collection,
-  type Item,
   createCollection,
+  type Item,
   withSort,
 } from '@/server/collection';
-import { z } from 'zod';
 
 export type Post = Item<PostMetadata>;
 export type PostMetadata = z.infer<typeof Post>;

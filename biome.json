@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "ignore": ["**/node_modules/**", "**/.next/**"]
+    "includes": ["**", "!**/node_modules", "!**/.next"]
   },
   "formatter": {
     "indentStyle": "space",
@@ -16,11 +16,12 @@
     "formatter": {
       "enabled": true,
       "indentWidth": 2
+    },
+    "parser": {
+      "tailwindDirectives": true
     }
   },
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "rules": {
       "correctness": { "noUnusedImports": "error" }

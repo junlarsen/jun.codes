@@ -1,5 +1,5 @@
-import { findAllBlogs } from '@/server/blog';
 import type { MetadataRoute } from 'next';
+import { findAllBlogs } from '@/server/blog';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await findAllBlogs(false);

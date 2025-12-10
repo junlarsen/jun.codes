@@ -3,9 +3,9 @@ import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/700.css';
 import './globals.css';
 import 'katex/dist/katex.css';
+import type { PropsWithChildren } from 'react';
 import { cn } from '@/classname';
 import { Navbar } from '@/components/navbar';
-import type { PropsWithChildren } from 'react';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://jun.codes/'),
