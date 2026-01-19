@@ -55,6 +55,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" dir="ltr">
+      <script
+        defer
+        src="https://cloud.umami.is/script.js"
+        data-website-id="5d80b98b-d3a6-468d-8030-76e0ddf468c2"
+      ></script>
       <body className={cn('bg-gray-2')}>
         <Navbar />
         <main>{children}</main>
